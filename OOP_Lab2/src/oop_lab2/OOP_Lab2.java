@@ -22,6 +22,11 @@ public class OOP_Lab2 {
         Tests.speedTest();
     }
     
+    public static void ex4(){
+        System.out.println("[1]: " + String.valueOf(Tests.memTest(1)));
+        System.out.println("[2]: " + String.valueOf(Tests.memTest(2)));
+    }
+    
     public static void main(String[] args) {
         
         /* Ex1 */
@@ -29,8 +34,10 @@ public class OOP_Lab2 {
         /* Ex2 */
         
         /* Ex3 */
-        OOP_Lab2.ex3();
-        
+        //OOP_Lab2.ex3();
+        /* Ex4 */
+        OOP_Lab2.ex4();
+        /* Ex5 */
     }
     
 }

@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Tests {
     
-    public static void matrixFill(){
+    private static void matrixFill(){
         int i,j;
         int[][] m = new int[100][100];
         Random randomGenerator = new Random();
@@ -14,12 +14,20 @@ public class Tests {
                 m[i][j] = randomGenerator.nextInt(100);
     }
     
-    public static void makeIntegerOne(){
+    private static void makeIntegerOne(){
        Integer a = new Integer(2+3);
     }
     
-    public static void makeIntegerTwo(){
+    private static void makeIntegerTwo(){
        Integer a = 2+3;
+    }
+    
+    private static void memStringOne(){
+        String s = "abc";
+    }
+    
+    private static void memStringTwo(){
+        String a = new String("abc");
     }
     
     public static void speedTest(){
@@ -43,5 +51,19 @@ public class Tests {
         start = System.nanoTime();
         Tests.makeIntegerTwo();
         System.out.println(System.nanoTime() - start);
+    }
+    
+    public static long memTest(int choice){
+        long usedMem = Runtime.getRuntime().totalMemory() - 
+                Runtime.getRuntime().freeMemory();
+        switch(choice){
+            case 1:
+                memStringOne();
+                break;
+            case 2:
+                memStringTwo();
+                break;
+        }
+        return usedMem;
     }
 }
