@@ -13,9 +13,9 @@ public class Polygon {
     }
     
     public Polygon(float[] polCoord){
-        if(polCoord.length % 2 != 0 || polCoord.length == 0)
-            
-        Polygon(polCoord.length / 2);
+        //if(polCoord.length % 2 != 0 || polCoord.length == 0)
+        //de ce nu pot avea instructiuni intaintea comenzii:
+        this(polCoord.length / 2);
     }
     
     static void displayPolygon(Point[] polygonPoints){
