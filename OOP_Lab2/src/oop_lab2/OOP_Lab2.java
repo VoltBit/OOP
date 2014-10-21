@@ -27,6 +27,12 @@ public class OOP_Lab2 {
         System.out.println("[2]: " + String.valueOf(Tests.memTest(2)));
     }
     
+    public static void ex5(){
+        RandomStringGenerator s = new RandomStringGenerator(6, "wasdqf");
+        System.out.println("Alphabet provided: wasdqf");
+        s.next();
+        System.out.println("Random string: " + s.next());
+    }
     public static void main(String[] args) {
         
         /* Ex1 */
@@ -36,8 +42,9 @@ public class OOP_Lab2 {
         /* Ex3 */
         //OOP_Lab2.ex3();
         /* Ex4 */
-        OOP_Lab2.ex4();
+        //OOP_Lab2.ex4();
         /* Ex5 */
+        OOP_Lab2.ex5();
     }
     
 }
