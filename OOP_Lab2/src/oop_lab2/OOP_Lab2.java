@@ -33,6 +33,11 @@ public class OOP_Lab2 {
         s.next();
         System.out.println("Random string: " + s.next());
     }
+    
+    public static void ex6(){
+        
+    }
+    
     public static void main(String[] args) {
         
         /* Ex1 */
@@ -44,7 +49,9 @@ public class OOP_Lab2 {
         /* Ex4 */
         //OOP_Lab2.ex4();
         /* Ex5 */
-        OOP_Lab2.ex5();
+        //OOP_Lab2.ex5();
+        /* Ex6 */
+        OOP_Lab2.ex6();
     }
     
 }
