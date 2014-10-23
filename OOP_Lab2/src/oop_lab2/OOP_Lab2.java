@@ -28,14 +28,15 @@ public class OOP_Lab2 {
     }
     
     public static void ex5(){
-        RandomStringGenerator s = new RandomStringGenerator(6, "wasdqf");
+        RandomStringGenerator s = new RandomStringGenerator(10, "wasdqf");
         System.out.println("Alphabet provided: wasdqf");
         s.next();
         System.out.println("Random string: " + s.next());
     }
     
     public static void ex6(){
-        
+        PasswordMaker pass = new PasswordMaker("Andrei","Dobre",20);
+        System.out.println("Password: " + pass.getPassword());
     }
     
     public static void main(String[] args) {
