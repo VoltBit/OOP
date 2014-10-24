@@ -20,14 +20,12 @@ public class PasswordMaker {
         RandomStringGenerator auxGen;
         auxGen = new RandomStringGenerator(10,this.MAGIC_STRING);
         String auxAlphabet = auxGen.next();
-        //System.out.println(auxAlphabet);
-        return auxAlphabet;
-        /*auxGen = new RandomStringGenerator(this.MAGIC_NUMBER,auxAlphabet);
+        auxGen = new RandomStringGenerator(this.MAGIC_NUMBER,auxAlphabet);
         String password = new String();
         password = this.firstName.substring(this.firstName.length()-age % 3);
         String a = age.toString();
         password = password + auxGen.next();// + (age + lastName.length()).toString();
-        return password;*/
+        return password;
     }
     
 }
