@@ -11,10 +11,22 @@ public class OOP_Lab4 {
         c.execute(); c.execute(); c.execute();
     }
     private static void ex2(){
+        Stack s = new Stack();
+        s.initStack(10);
+        s.displayStack();
+        
+        Queue q = new Queue();
+        q.initQueue(10);
+        q.displayQueue();
+    }
+    private static void ex3(){
         
     }
+    
     public static void main(String[] args) {
-        ex1();
+        //ex1();
+        //ex2();
+        ex3();
     }
 
 }
