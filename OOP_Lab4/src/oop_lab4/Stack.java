@@ -1,11 +1,9 @@
 package oop_lab4;
 
-import java.util.ArrayList;
-
 public class Stack extends MemStruct implements Container{
-    ArrayList a = new ArrayList();
+
     public void initStack(int elementCount){
-        a = this.genIntStruct(elementCount);
+        this.a = this.genStruct(elementCount);
     }
     
     public void displayStack(){
@@ -14,7 +12,10 @@ public class Stack extends MemStruct implements Container{
     }
     
     @Override
-    public void push(Task task){
-        
+    public Task pop(){
+        int index = a.size()-1;
+        Object aux = a.get(index);
+        a.remove(index);
+        return (Task)aux;
     }
 }

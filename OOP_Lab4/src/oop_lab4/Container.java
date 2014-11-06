@@ -1,9 +1,7 @@
 package oop_lab4;
 
-import java.util.ArrayList;
-
 public interface Container {
-    Task pop(ArrayList a, int index);
+    Task pop();
     void push(Task task);
     int size();
     boolean isEmpty();

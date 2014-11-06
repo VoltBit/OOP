@@ -1,11 +1,9 @@
 package oop_lab4;
 
-import java.util.ArrayList;
-
 public class Queue extends MemStruct implements Container{
-    ArrayList a = new ArrayList();
+    
     public void initQueue(int elementCount){
-        a = this.genIntStruct(elementCount);
+        this.a = this.genStruct(elementCount);
     }
     
     public void displayQueue(){
@@ -14,7 +12,10 @@ public class Queue extends MemStruct implements Container{
     }
     
     @Override
-    public void push(Task task){
-        
+    public Task pop(){
+        int index = 0;
+        Object aux = a.get(index);
+        a.remove(index);
+        return (Task)aux;
     }
 }

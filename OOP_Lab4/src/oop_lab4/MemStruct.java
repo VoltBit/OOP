@@ -3,27 +3,22 @@ package oop_lab4;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MemStruct implements Container {
-    @Override
-    public Task pop(ArrayList a, int index){
-        return (Task)a.get(index);
-    }
+public abstract class MemStruct implements Container {
+    ArrayList a = new ArrayList();
     
     @Override
     public void push(Task task){
-        
+        this.a.add(task);
     }
 
     @Override
     public int size(){
-        int x = 0;
-        
-        return x;
+        return this.a.size();
     }
     
     @Override
     public boolean isEmpty(){
-        return true;
+        return this.a.isEmpty();
     }
     
     @Override
@@ -31,7 +26,7 @@ public class MemStruct implements Container {
         
     }
     
-    protected ArrayList genIntStruct(int elementCount){
+    protected ArrayList genStruct(int elementCount){
         ArrayList a = new ArrayList();
         int i,aux;
         for(i = 0; i < elementCount; i++){
@@ -51,8 +46,9 @@ public class MemStruct implements Container {
     protected static void displayStruct(ArrayList a){
         int i;
         for(i = 0; i < a.size(); i++){
-            System.out.print(a.get(i) + " ");
+            System.out.print((Task)(a.get(i)) + " ");
         }
+        System.out.println();
     }
     
 }
