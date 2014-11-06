@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Queue extends MemStruct implements Container{
     ArrayList a = new ArrayList();
     public void initQueue(int elementCount){
-        a = this.genStruct(elementCount);
+        a = this.genIntStruct(elementCount);
     }
     
     public void displayQueue(){

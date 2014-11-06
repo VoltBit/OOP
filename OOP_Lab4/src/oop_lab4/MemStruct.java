@@ -31,7 +31,7 @@ public class MemStruct implements Container {
         
     }
     
-    protected ArrayList genStruct(int elementCount){
+    protected ArrayList genIntStruct(int elementCount){
         ArrayList a = new ArrayList();
         int i,aux;
         for(i = 0; i < elementCount; i++){
