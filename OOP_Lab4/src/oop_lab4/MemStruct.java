@@ -21,11 +21,6 @@ public abstract class MemStruct implements Container {
         return this.a.isEmpty();
     }
     
-    @Override
-    public void transferFrom(Container container){
-        
-    }
-    
     protected ArrayList genStruct(int elementCount){
         ArrayList a = new ArrayList();
         int i,aux;

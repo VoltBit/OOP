@@ -18,4 +18,11 @@ public class Queue extends MemStruct implements Container{
         a.remove(index);
         return (Task)aux;
     }
+    @Override
+    public void transferFrom(Container container){
+        while(!container.isEmpty()){
+            this.push(container.pop());
+            this.pop();
+        }
+    }
 }
