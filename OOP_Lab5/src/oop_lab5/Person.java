@@ -7,7 +7,7 @@ public class Person {
 	
 	// protected not private, because subclasses may need it (any person has a name)
     
-    public int compare(Person a, Person b){
+    static int compare(Person a, Person b){
         return a.name.compareTo(b.name);
     }
     
