@@ -7,9 +7,8 @@ public class Student extends Person{
 	
 	private Integer grade;
 	
-        static int compare(Student a, Student b){
-            if(b.grade < a.grade)return 1;
-            else return 0;
+        static boolean compare(Student a, Student b){
+            return (b.grade < a.grade);
         }
         
 	public Student(){}
