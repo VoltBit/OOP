@@ -1,20 +1,20 @@
-package htables;
+package hmaps;
 
-import htables.list.List;
-import htables.map.HashMap;
-import htables.map.MyKey;
-import htables.map.MyValue;
+import hmaps.list.List;
+import hmaps.list.MyNode;
+import hmaps.map.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Random;
 import java.util.Scanner;
 
-public class HTables {
+public class HMaps {
     static int testNumber,aux;
     private static Scanner openFile(){
         FileReader file;
         Scanner read;
         try {
-            file = new FileReader("input.txt");
+            file = new FileReader("/home/smith/java/OOP/HMaps/src/hmaps/test.txt");
             read = new Scanner(file);
             return read;
         } catch (FileNotFoundException ex) {
@@ -31,35 +31,58 @@ public class HTables {
     }
     
     static void insertValue(String keyString, String val, HashMap hmap, int bucketNumber){
-        List valList = new List();
+        /*List valList = new List();
         MyKey key = new MyKey(keyString,valList);
         int hash = key.hashCode();
         MyValue v = new MyValue(val);
         if(!hmap.put(key, v)){
             System.out.println("Insert error");
+        }*/
+       //System.out.println(hmap.get(key).toString());
+    }
+    static void testing_aparatus(){
+        int i,j,aux;
+        HashMap h = new HashMap(10);
+        String[] s = {"abcd","asldkfh","uinoasd","rthydsk","gfhdfgt"
+                ,"bgttyhnty","edcvfe"};
+        Random rand = new Random();
+        for(i = 0; i < 10; i++){
+            aux = Math.abs(rand.nextInt() % 7);
+            List valList = new List();
+            for(j = 0; j < aux + 1; j++){
+                aux = Math.abs(rand.nextInt() % 7);
+                MyValue v = new MyValue(s[aux]);
+                valList.add(v);
+            }
+            MyKey k = new MyKey(s[aux],valList);
+            List keyList = new List();
+            keyList.add(k);
+            h.buckets[k.hashCode() % 10] = keyList;
+            System.out.print("[" + i + "]");
+            System.out.println(h.get(k));
         }
+        
     }
     static void checkKey(String keyString, HashMap hmap, int bucketNumber){
         List valList = new List();
         MyKey key = new MyKey(keyString,valList);      
         System.out.println(hmap.containsKey(key));
     }
-    
     public static void main(String[] args) {
         int bucketNumber = 5;
-        System.out.println("Test");
-        
         Scanner read = openFile();
         if(read == null){
-            System.out.println("File open error");
             return ;
         }
-        System.out.println("File open error");
         HashMap hmap = new HashMap(bucketNumber);
         testNumber = read.nextInt();
+        int i = read.nextInt();
+        //insertValue(read.next(),read.next(),hmap,bucketNumber);
+        //testing_aparatus();
+        
         while(read.hasNextLine()){
             aux = read.nextInt();
-            System.out.println(aux);
+            insertValue(read.next(),read.next(),hmap,bucketNumber);
             switch(aux){
                 case 0:
                     getValues(read.next(),hmap,bucketNumber);
