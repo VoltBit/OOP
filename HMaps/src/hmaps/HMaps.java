@@ -22,25 +22,7 @@ public class HMaps {
             return null;
         }
     }
-    static void getValues(String keyString, HashMap hmap, int bucketNumber){
-        List valList = new List();
-        MyKey key = new MyKey(keyString,valList);
-        int hash = key.hashCode();
-        List list = (List)hmap.get(key);
-        System.out.println(list.toString());
-    }
-    
-    static void insertValue(String keyString, String val, HashMap hmap, int bucketNumber){
-        /*List valList = new List();
-        MyKey key = new MyKey(keyString,valList);
-        int hash = key.hashCode();
-        MyValue v = new MyValue(val);
-        if(!hmap.put(key, v)){
-            System.out.println("Insert error");
-        }*/
-       //System.out.println(hmap.get(key).toString());
-    }
-    static void testing_aparatus(){
+        static void testing_aparatus(){
         int i,j,aux;
         HashMap h = new HashMap(10);
         String[] s = {"abcd","asldkfh","uinoasd","rthydsk","gfhdfgt"
@@ -57,11 +39,29 @@ public class HMaps {
             MyKey k = new MyKey(s[aux],valList);
             List keyList = new List();
             keyList.add(k);
-            h.buckets[k.hashCode() % 10] = keyList;
+           // h.buckets[k.hashCode() % 10] = keyList;
             System.out.print("[" + i + "]");
             System.out.println(h.get(k));
         }
         
+    }
+    static void getValues(String keyString, HashMap hmap, int bucketNumber){
+        List valList = new List();
+        MyKey key = new MyKey(keyString,valList);
+        int hash = key.hashCode();
+        List list = (List)hmap.get(key);
+        System.out.println("Values for key " + keyString + ": " + list.toString());
+    }
+    
+    static void insertValue(String keyString, String val, HashMap hmap, int bucketNumber){
+        List valList = new List();
+        MyKey key = new MyKey(keyString,valList);
+        int hash = key.hashCode();
+        MyValue v = new MyValue(val);
+        if(!hmap.put(key, v)){
+            System.out.println("Insert error");
+        }
+       System.out.println(hmap.get(key).toString());
     }
     static void checkKey(String keyString, HashMap hmap, int bucketNumber){
         List valList = new List();
@@ -76,13 +76,9 @@ public class HMaps {
         }
         HashMap hmap = new HashMap(bucketNumber);
         testNumber = read.nextInt();
-        int i = read.nextInt();
-        //insertValue(read.next(),read.next(),hmap,bucketNumber);
-        //testing_aparatus();
         
         while(read.hasNextLine()){
             aux = read.nextInt();
-            insertValue(read.next(),read.next(),hmap,bucketNumber);
             switch(aux){
                 case 0:
                     getValues(read.next(),hmap,bucketNumber);
