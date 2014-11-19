@@ -2,14 +2,15 @@ package hmaps;
 
 import hmaps.list.List;
 import hmaps.list.MyNode;
-import hmaps.map.*;
+import hmaps.map.HashMap;
+import hmaps.map.MyKey;
+import hmaps.map.MyValue;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Random;
 import java.util.Scanner;
 
 public class HMaps {
-    static int testNumber,aux;
+    static int testNumber;
     private static Scanner openFile(){
         FileReader file;
         Scanner read;
@@ -22,53 +23,65 @@ public class HMaps {
             return null;
         }
     }
-        static void testing_aparatus(){
-        int i,j,aux;
-        HashMap h = new HashMap(10);
-        String[] s = {"abcd","asldkfh","uinoasd","rthydsk","gfhdfgt"
-                ,"bgttyhnty","edcvfe"};
-        Random rand = new Random();
-        for(i = 0; i < 10; i++){
-            aux = Math.abs(rand.nextInt() % 7);
-            List valList = new List();
-            for(j = 0; j < aux + 1; j++){
-                aux = Math.abs(rand.nextInt() % 7);
-                MyValue v = new MyValue(s[aux]);
-                valList.add(v);
-            }
-            MyKey k = new MyKey(s[aux],valList);
-            List keyList = new List();
-            keyList.add(k);
-           // h.buckets[k.hashCode() % 10] = keyList;
-            System.out.print("[" + i + "]");
-            System.out.println(h.get(k));
+    
+    public static void listTester(){
+        int i,nodeNumber = 10;
+        String[] test = {"abab0","bvbvbv1","cjkjkj2",
+            "dptptp3","edfdfd4","frtrt5","grwrwr6","hezr7"};
+        MyValue[] v1 = new MyValue[8];
+        MyValue[] v2 = new MyValue[8];
+        for(i = 0; i < 8; i++){
+            v1[i] = new MyValue(test[i]);
         }
+        for(i = 0; i < 8; i++){
+            v2[i] = new MyValue(test[7 - i]);
+        }
+        HashMap h = new HashMap(nodeNumber);
+        /*List[] l = new List[8];
+        MyKey[] k = new MyKey[8];
+        for(i = 0; i < 8; i++){
+            l[i] = new List();
+            k[i] = new MyKey(test[i],l[i]);
+            h.put(k[i],v1[i]);
+            if(i % 2 == 0)h.put(k[i],v2[i]);
+            System.out.println(h.get(k[i]).toString() + " [cod: " + (k[i].hashCode() + nodeNumber) % nodeNumber + "]");
+        }System.out.println("_________");
+        for(i = 0; i < 8; i++){
+            System.out.println(h.get(k[i]).toString() + " [cod: " + (k[i].hashCode() + nodeNumber) % nodeNumber + "]");
+        }*/
+        List l = new List();
+        List l2 = new List();
+        MyKey k = new MyKey(test[2],l);
+        MyKey k2 = new MyKey(test[3],l2);
+        h.put(k,v1[1]);
+        h.put(k2,v1[1]);
+        h.put(k,v1[5]);
+        h.put(k2,v1[6]);
+        h.put(k,v1[3]);
+//        System.out.println(h.get(k));
+//        System.out.println(h.get(k2));
         
-    }
-    static void getValues(String keyString, HashMap hmap, int bucketNumber){
-        List valList = new List();
-        MyKey key = new MyKey(keyString,valList);
-        int hash = key.hashCode();
-        List list = (List)hmap.get(key);
-        System.out.println("Values for key " + keyString + ": " + list.toString());
+        List tst = new List();
+        tst.add(k);
+        tst.add(k2);
+        System.out.println(((MyNode)tst.getFirstEqual(k2)).content.toString());
+        System.out.println(((MyNode)tst.getFirstEqual(k)).content.toString());
     }
     
-    static void insertValue(String keyString, String val, HashMap hmap, int bucketNumber){
-        List valList = new List();
-        MyKey key = new MyKey(keyString,valList);
-        int hash = key.hashCode();
-        MyValue v = new MyValue(val);
-        if(!hmap.put(key, v)){
-            System.out.println("Insert error");
-        }
-       System.out.println(hmap.get(key).toString());
-    }
-    static void checkKey(String keyString, HashMap hmap, int bucketNumber){
-        List valList = new List();
-        MyKey key = new MyKey(keyString,valList);      
-        System.out.println(hmap.containsKey(key));
-    }
     public static void main(String[] args) {
+        
+        
+        listTester();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         int bucketNumber = 5;
         Scanner read = openFile();
         if(read == null){
@@ -77,17 +90,15 @@ public class HMaps {
         HashMap hmap = new HashMap(bucketNumber);
         testNumber = read.nextInt();
         
+        /*
         while(read.hasNextLine()){
             aux = read.nextInt();
             switch(aux){
                 case 0:
-                    getValues(read.next(),hmap,bucketNumber);
                     break;
                 case 1:
-                    insertValue(read.next(),read.next(),hmap,bucketNumber);
                     break;
                 case 2:
-                    checkKey(read.next(),hmap,bucketNumber);
                     break;
                 case 3:
                     break;
@@ -97,7 +108,7 @@ public class HMaps {
                     System.out.println("Wrong input (action type)");
                     break;
             }
-        }
+        }*/
         read.close();
     }
 
