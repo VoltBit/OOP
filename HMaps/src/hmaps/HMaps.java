@@ -1,17 +1,22 @@
 package hmaps;
 
 import hmaps.list.List;
-import hmaps.list.MyNode;
 import hmaps.map.HashMap;
 import hmaps.map.MyKey;
 import hmaps.map.MyValue;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 public class HMaps {
     static int testNumber;
-    private static Scanner openFile(){
+    public static HashMap hmap;
+    public static void initHashMap(int bucketsNumber){
+        hmap = new HashMap(bucketsNumber);
+    }
+    private static Scanner openReadFile(){
         FileReader file;
         Scanner read;
         try {
@@ -19,9 +24,18 @@ public class HMaps {
             read = new Scanner(file);
             return read;
         } catch (FileNotFoundException ex) {
-            System.out.println("File open error");
+            System.err.println("File open error");
             return null;
         }
+    }
+    private static PrintWriter openWriteFile() throws FileNotFoundException{
+        PrintWriter w = null;
+        try {
+            w = new PrintWriter("/home/smith/java/OOP/HMaps/src/hmaps/output.txt", "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            System.err.println("File not found");
+        }
+        return w;
     }
     
     public static void listTester(){
@@ -51,65 +65,121 @@ public class HMaps {
         }*/
         List l = new List();
         List l2 = new List();
+        List l3 = new List();
         MyKey k = new MyKey(test[2],l);
         MyKey k2 = new MyKey(test[3],l2);
         h.put(k,v1[1]);
-        h.put(k2,v1[1]);
+        h.put(k2,v2[1]);
         h.put(k,v1[5]);
-        h.put(k2,v1[6]);
-        h.put(k,v1[3]);
-//        System.out.println(h.get(k));
-//        System.out.println(h.get(k2));
+        h.put(k2,v2[6]);
+        h.put(k,v1[7]);
+        h.put(k,v1[2]);
+//        h.put(k,v1[1]);
+        h.put(k2,v2[7]);
+        h.put(k2,v2[7]);
+        h.put(k2,v2[5]);
+        h.put(k2,v2[5]);
+        System.out.println("Key: " + ((MyKey)k).key + "[" + ((MyKey)k).hashCode() + "]" + " Values: " + k.toString());
+        System.out.println("Key: " + ((MyKey)k2).key + "[" + ((MyKey)k2).hashCode() + "]" + " Values: " + k2.toString());
+        h.remove(k2,v1[1]);
+        System.out.println(h.get(k2));
+        h.remove(k2);
         
-        List tst = new List();
-        tst.add(k);
-        tst.add(k2);
-        System.out.println(((MyNode)tst.getFirstEqual(k2)).content.toString());
-        System.out.println(((MyNode)tst.getFirstEqual(k)).content.toString());
+//        System.out.println("\n" + h.get(k));
+        System.out.println(h.get(k2));
+    }
+    public static MyKey makeKey(String s){
+        List l = new List();
+        MyKey k = new MyKey(s,l);
+        return k;
+    }
+    public static MyValue makeValue(String s){
+        MyValue v = new MyValue(s);
+        return v;
+    }
+    public static String getValues(String s) throws FileNotFoundException{
+        List l = (List)hmap.get(makeKey(s));
+        if(l == null)return null;
+        System.out.println("Get for key: " + s);
+        System.out.println(hmap.get(makeKey(s)).toString());
+        return hmap.get(makeKey(s)).toString();
+    }
+    public static void insertPair(String keyString, String valueString){
+        hmap.put(makeKey(keyString),makeValue(valueString));
+    }
+    public static String contains(String keyString){
+        if(hmap.containsKey(makeKey(keyString))){
+            return "true";
+        }
+        return "false";
+    }
+    public static String remove(String keyString){
+        return hmap.remove(makeKey(keyString)).toString();
+    }
+    public static String remove(String keyString, String valueString){
+        return ((Integer)hmap.remove(makeKey(keyString),makeValue(valueString))).toString();
     }
     
-    public static void main(String[] args) {
+    public static void testMap() throws FileNotFoundException{
+        PrintWriter write = openWriteFile();
+        insertPair("aaa","bcd");
+        insertPair("aaab","bcd");
+        insertPair("aaa","bcc");
+        insertPair("aaa","acc");
+        MyKey k = makeKey("aaa");
+//        write.println(hmap.get(makeKey("aaa")).toString());
+//        write.println(remove("aaa","bcd"));
+//        write.println(hmap.get(makeKey("aaa")).toString());
+//        write.println(remove("aaa","bcc"));
+//        write.println(hmap.get(makeKey("aaa")).toString());
+//        write.println(remove("aaa"));
+//        System.out.println(hmap.get(makeKey("aaa")).toString());
+//        System.out.println(remove("aaa"));
+        //System.out.println(hmap.get(makeKey("aaa")).toString());
         
-        
-        listTester();
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        int bucketNumber = 5;
-        Scanner read = openFile();
+        System.out.println(remove("aaa"));
+        System.out.println(getValues("aaa"));
+        System.out.println(contains("aaa"));
+        write.close();
+    }
+    
+    public static void main(String[] args) throws FileNotFoundException {
+        //listTester();
+        int bucketsNumber = 5,aux,counter = 0;
+        initHashMap(bucketsNumber);
+        Scanner read = openReadFile();
+        PrintWriter write = openWriteFile();
         if(read == null){
             return ;
         }
-        HashMap hmap = new HashMap(bucketNumber);
         testNumber = read.nextInt();
-        
-        /*
-        while(read.hasNextLine()){
+        while(counter < testNumber){
+            counter++;
             aux = read.nextInt();
             switch(aux){
                 case 0:
+                    write.println(getValues(read.next()));
                     break;
                 case 1:
+                    insertPair(read.next(), read.next());
                     break;
                 case 2:
+                    write.println(contains(read.next()));
                     break;
                 case 3:
+                    write.println(remove(read.next()));
                     break;
                 case 4:
+                    write.println(remove(read.next(),read.next()));
                     break;
                 default:
                     System.out.println("Wrong input (action type)");
                     break;
             }
-        }*/
+        }
         read.close();
+        write.close();
+//        testMap();
     }
 
 }
