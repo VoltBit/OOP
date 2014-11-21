@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 public class HMaps {
-    static int testNumber;
+    static int testNumber,bucketsNumber = 5;
     public static HashMap hmap;
     public static void initHashMap(int bucketsNumber){
         hmap = new HashMap(bucketsNumber);
@@ -20,7 +20,7 @@ public class HMaps {
         FileReader file;
         Scanner read;
         try {
-            file = new FileReader("/home/smith/java/OOP/HMaps/src/hmaps/test.txt");
+            file = new FileReader("input.txt");
             read = new Scanner(file);
             return read;
         } catch (FileNotFoundException ex) {
@@ -31,62 +31,39 @@ public class HMaps {
     private static PrintWriter openWriteFile() throws FileNotFoundException{
         PrintWriter w = null;
         try {
-            w = new PrintWriter("/home/smith/java/OOP/HMaps/src/hmaps/output.txt", "UTF-8");
+            w = new PrintWriter("output.txt", "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             System.err.println("File not found");
         }
         return w;
     }
-    
-    public static void listTester(){
-        int i,nodeNumber = 10;
-        String[] test = {"abab0","bvbvbv1","cjkjkj2",
-            "dptptp3","edfdfd4","frtrt5","grwrwr6","hezr7"};
-        MyValue[] v1 = new MyValue[8];
-        MyValue[] v2 = new MyValue[8];
-        for(i = 0; i < 8; i++){
-            v1[i] = new MyValue(test[i]);
+    public static boolean loadChecker(int loadLimit){
+        int loadFactor;
+        loadFactor = hmap.checkLoad()/bucketsNumber;
+        return loadFactor > loadLimit;
+    }
+
+    /**
+     * Balances the loads from buckets. Firstly it checks if current
+     * average load is greater than a certain preset load factor
+     * (in this case 10). Then it creates an array of keys with all
+     * the keys from all the buckets. In the end the keys are redistributed
+     * in the buckets array.
+     */
+    public static void loadBalancer(){
+        int loadFactor = 10;
+        int i;
+        if(loadChecker(loadFactor)){
+            List l = new List();
+            hmap.gather(l);
+            bucketsNumber *= 2;
+            initHashMap(bucketsNumber);
+            Object[] arrr = new Object[l.size()];
+            int sizeArray = l.toArray(arrr);
+            for(i = 0; i < sizeArray; i++){
+                hmap.put((MyKey)arrr[i]);
+            }
         }
-        for(i = 0; i < 8; i++){
-            v2[i] = new MyValue(test[7 - i]);
-        }
-        HashMap h = new HashMap(nodeNumber);
-        /*List[] l = new List[8];
-        MyKey[] k = new MyKey[8];
-        for(i = 0; i < 8; i++){
-            l[i] = new List();
-            k[i] = new MyKey(test[i],l[i]);
-            h.put(k[i],v1[i]);
-            if(i % 2 == 0)h.put(k[i],v2[i]);
-            System.out.println(h.get(k[i]).toString() + " [cod: " + (k[i].hashCode() + nodeNumber) % nodeNumber + "]");
-        }System.out.println("_________");
-        for(i = 0; i < 8; i++){
-            System.out.println(h.get(k[i]).toString() + " [cod: " + (k[i].hashCode() + nodeNumber) % nodeNumber + "]");
-        }*/
-        List l = new List();
-        List l2 = new List();
-        List l3 = new List();
-        MyKey k = new MyKey(test[2],l);
-        MyKey k2 = new MyKey(test[3],l2);
-        h.put(k,v1[1]);
-        h.put(k2,v2[1]);
-        h.put(k,v1[5]);
-        h.put(k2,v2[6]);
-        h.put(k,v1[7]);
-        h.put(k,v1[2]);
-//        h.put(k,v1[1]);
-        h.put(k2,v2[7]);
-        h.put(k2,v2[7]);
-        h.put(k2,v2[5]);
-        h.put(k2,v2[5]);
-        System.out.println("Key: " + ((MyKey)k).key + "[" + ((MyKey)k).hashCode() + "]" + " Values: " + k.toString());
-        System.out.println("Key: " + ((MyKey)k2).key + "[" + ((MyKey)k2).hashCode() + "]" + " Values: " + k2.toString());
-        h.remove(k2,v1[1]);
-        System.out.println(h.get(k2));
-        h.remove(k2);
-        
-//        System.out.println("\n" + h.get(k));
-        System.out.println(h.get(k2));
     }
     public static MyKey makeKey(String s){
         List l = new List();
@@ -100,8 +77,6 @@ public class HMaps {
     public static String getValues(String s) throws FileNotFoundException{
         List l = (List)hmap.get(makeKey(s));
         if(l == null)return null;
-        System.out.println("Get for key: " + s);
-        System.out.println(hmap.get(makeKey(s)).toString());
         return hmap.get(makeKey(s)).toString();
     }
     public static void insertPair(String keyString, String valueString){
@@ -120,32 +95,8 @@ public class HMaps {
         return ((Integer)hmap.remove(makeKey(keyString),makeValue(valueString))).toString();
     }
     
-    public static void testMap() throws FileNotFoundException{
-        PrintWriter write = openWriteFile();
-        insertPair("aaa","bcd");
-        insertPair("aaab","bcd");
-        insertPair("aaa","bcc");
-        insertPair("aaa","acc");
-        MyKey k = makeKey("aaa");
-//        write.println(hmap.get(makeKey("aaa")).toString());
-//        write.println(remove("aaa","bcd"));
-//        write.println(hmap.get(makeKey("aaa")).toString());
-//        write.println(remove("aaa","bcc"));
-//        write.println(hmap.get(makeKey("aaa")).toString());
-//        write.println(remove("aaa"));
-//        System.out.println(hmap.get(makeKey("aaa")).toString());
-//        System.out.println(remove("aaa"));
-        //System.out.println(hmap.get(makeKey("aaa")).toString());
-        
-        System.out.println(remove("aaa"));
-        System.out.println(getValues("aaa"));
-        System.out.println(contains("aaa"));
-        write.close();
-    }
-    
     public static void main(String[] args) throws FileNotFoundException {
-        //listTester();
-        int bucketsNumber = 5,aux,counter = 0;
+        int aux,counter = 0;
         initHashMap(bucketsNumber);
         Scanner read = openReadFile();
         PrintWriter write = openWriteFile();
@@ -162,6 +113,7 @@ public class HMaps {
                     break;
                 case 1:
                     insertPair(read.next(), read.next());
+                    loadBalancer();
                     break;
                 case 2:
                     write.println(contains(read.next()));
@@ -179,7 +131,6 @@ public class HMaps {
         }
         read.close();
         write.close();
-//        testMap();
     }
 
 }

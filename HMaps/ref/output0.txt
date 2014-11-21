@@ -1,0 +1,7 @@
+(bcc, 1) (bcd, 1) 
+0
+true
+1
+(bcd, 1) (efg, 1) 
+(bcd, 1) (efg, 1) 
+null

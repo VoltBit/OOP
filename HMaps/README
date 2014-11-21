@@ -1,0 +1,23 @@
+Dobre Andrei Ciprian 325CB Tema 1 HashMap
+
+Prezentare generala a structurii si a abordarii cerintei
+
+Structura aplicatiei cuprinde clasele abstracte ale scheletului impreuna cu implementarile: HashMap, List, MyNode, MyValue si MyKey. Clasa ce contine functia main se numeste HMaps.
+Ideea principala de la care am plecat a fost sa creez doua clase, 'List' si 'MyNode', case sa fie cat mai generaliste, suficient cat sa fie folosite si in alte aplicatii. Fiecare lista este formata din mai multe noduri, fiecare nod avand un camp 'content' in care am pus fie un obiect 'MyKey' fie unul 'MyValue'.
+HashMap contine un vector de liste 'buckets' care contine urmatoarele:
+
+buckets[] -> vector de liste -> fiecare lista contine noduri 
+	-> ficare nod contine in campul 'content' un obiect de tip 'MyKey' 
+	-> fiecare obiect 'MyKey' are doua campuri: nume cheie 'key' si 'valueList' 
+	-> in campul 'valueList' se afla o lista 
+	-> lista este formata din noduri 
+	-> in fiecare nod se afla un obiect de tipul 'MyValue' care contine in campul 'content' numele valorii si in 'occurence' numarul de aparitii ( ***observatia 1 )
+
+Load balance-ul functioneaza astfel: este parcurs vectorul buckets, fiecare lista corespunzatoare unui element din buckets copiaza continutul sau (node.content) intr-o alta lista. Astfel ajung sa am toate cheile intr-o singura lista. Cum campurile listei nu sunt publice am facut o metoda care transforma lista circulara intr-un vector pentru a putea parcurge elementele in afara clasei List. Acest vector l-am parcurs si am inserat valorile intr-un hashMap nou alocat cu dublul numarului de buckets.
+
+Am incercat sa explic in cod fiecare functie pe care am imlementat-o asa ca nu voi descrie niciuna dintre ele aici.
+
+***Observatii:
+1: MyValue.occurance retine numarul de aparitii din interiorul listei unei chei, nu numarul de aparitii din intregul hashMap. Am implementat astfel desi in cerinta se cere a doua varainta pentru ca testul numarul 0 verifica de cate ori valoare apare in lista cheii.
+
+2: nu am implementat functia 'compareTo' din clasa MyNode deoarece nu era necesara algoritmului, ea trebuie declarata din cauza extinderii clasei 'Comparable'.

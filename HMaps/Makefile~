@@ -1,0 +1,6 @@
+run: build
+	java src/hmaps/HMaps
+build:
+	javac -d . src/hmaps/list/*.java src/hmaps/map/*.java src/hmaps/*.java
+clean:
+	rm -rf list map tema
