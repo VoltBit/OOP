@@ -1,7 +1,10 @@
 package thewar;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Queue;
 import thewar.graph.ISceneNode;
+import java.util.Scanner;
 
 public class Application implements ISceneNode{
 
@@ -35,10 +38,16 @@ public class Application implements ISceneNode{
     
     //abstract void ForEvaluation(double dt);
     
-    void readInput(){
-        
+    void readInput() throws FileNotFoundException{
+        String fileName = new String();
+        File file = new File(fileName);
+        int count = 0;
+        Scanner scan = new Scanner(file);
+        while(scan.hasNext()){
+            System.out.println(scan.next());
+            count++;
+        }   
     }
-    
     void generate(){
         
     }
