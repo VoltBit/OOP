@@ -9,7 +9,7 @@ public class Graph extends AbstractGraph{
         this.nodeLists = new LinkedList[nodes];
         this.maxNodes = nodes;
         this.nodeCounter = 0;
-        this.origin = new GraphVertex(0);
+        this.origin = null;
     }
     
     public boolean check(Vertex a){
@@ -25,7 +25,10 @@ public class Graph extends AbstractGraph{
     public void DFS(Vertex origin){
         
     }
-
+    public void DepthFirstSearch(){
+        boolean[] marked = new boolean[this.nodeCounter];
+        DFS(this.origin);
+    }
     /**
      * Adds a vertex in current graph. Arguments received are the 
      * parent node (if it is the origin/root parent is null) and
@@ -53,6 +56,8 @@ public class Graph extends AbstractGraph{
     @Override
     public void addEdge(Vertex a, Vertex b) {
         if(!check(b)){
+            if(this.origin == null)
+                this.origin = a;
             return;
             /* added the first node */
         }
