@@ -2,9 +2,10 @@ package thewar.graph;
 
 public class GraphVertex implements Vertex {
 
+    Object content;
     @Override
     public Object getContent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.content;
     }
 
     @Override

@@ -1,12 +1,12 @@
-package thewar.graph;
+package graphimmplement.graph;
 
 public class Vector2d {
     double x,y;
-    Vector2d(){
+    public Vector2d(){
         this.x = 0;
         this.y = 0;
     }
-    Vector2d(double a, double b){
+    public Vector2d(double a, double b){
         this.x = a;
         this.y = b;
     }

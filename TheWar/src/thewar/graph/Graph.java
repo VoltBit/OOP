@@ -7,7 +7,7 @@ import thewar.list.List;
  * @author smith
  */
 public class Graph extends AbstractGraph{
-    Graph(){
+    public Graph(){
         this.edgeLists = new List[20];
     }
     

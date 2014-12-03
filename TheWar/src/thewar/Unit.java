@@ -1,5 +1,6 @@
 package thewar;
 
+import java.util.Random;
 import thewar.graph.Vector2d;
 
 public class Unit {

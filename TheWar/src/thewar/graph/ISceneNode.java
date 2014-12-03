@@ -3,10 +3,11 @@ package thewar.graph;
 import thewar.IEvent;
 
 public interface ISceneNode {
-    void AddListener(ISceneNode n);
-    void Delete(ISceneNode n);
-    void Dispacher();
-    void SolveElement(IEvent e);
-    void AddEvent(IEvent e);
-    
+    void addListener(ISceneNode n);
+    void delete(ISceneNode n);
+    void dispacher();
+    void solveElement(IEvent e);
+    void addEvent(IEvent e);
+    Object getContent();
+    int edgeCount();
 }

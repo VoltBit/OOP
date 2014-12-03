@@ -9,27 +9,27 @@ import java.util.Scanner;
 public class Application implements ISceneNode{
 
     @Override
-    public void AddListener(ISceneNode n) {
+    public void addListener(ISceneNode n) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void Delete(ISceneNode n) {
+    public void delete(ISceneNode n) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void Dispacher() {
+    public void dispacher() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void SolveElement(IEvent e) {
+    public void solveElement(IEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void AddEvent(IEvent e) {
+    public void addEvent(IEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     Queue Q;
