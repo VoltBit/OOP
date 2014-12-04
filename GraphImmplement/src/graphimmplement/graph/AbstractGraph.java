@@ -5,7 +5,8 @@ import java.util.LinkedList;
 public abstract class AbstractGraph {
     int maxNodes;
     Vertex origin;
-    LinkedList[] nodeLists;
+    LinkedList nodeList;
+    LinkedList[] edgeLists;
     public abstract void addEdge(Vertex a, Vertex b);
     public abstract void addVertex(GraphVertex parent, Object content);
     public abstract void getVertex(Object o);

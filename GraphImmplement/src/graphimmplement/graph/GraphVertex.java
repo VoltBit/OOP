@@ -36,4 +36,9 @@ public class GraphVertex implements Vertex {
     public boolean equals(Object o){
         return this.content.equals(o);
     }
+    @Override
+    public String toString(){
+        if(this.content == null)return "Empty";
+        return this.content.toString();
+    }
 }
