@@ -1,4 +1,4 @@
-package graphimmplement.graph;
+package thewar2.graph;
 
 public class GraphVertex implements Vertex {
 

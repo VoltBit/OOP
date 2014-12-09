@@ -1,0 +1,14 @@
+Pentru implementarea SceneGraph-ului am incercat sa folosesc un arbore generic care
+primeste tipul nodurilor, dar implementarea nu functiona. Din acest motiv SG-ul
+are propria implementare a unui graf, separat de cea din pachetul graph.
+Implementarea din pachetul graph este folosita in PhysicsEngine pentru a
+determina bonusurile aferente trupelor pe baza distantelor dinte unitati.
+
+Nu am inteles de ce metoda delete(node) este in interiorul clasei SceneNode. Am
+considerat mai natural ca aceasta sa se afle in clasa GraphScene. Nu am
+implementat un tip de stergere prea comlpex pentru ca pe exemplul curent nu 
+este nevoie, mai precis: atunci cand sterg un nod nu sterg si toate nodurile
+fiu. In aplicatie niciun nod sters nu va avea fii.
+
+Un alt lucru care a facut pentru implementarea dificila este faptul ca nodurile
+din SceneGraph trebuie sa fie atat listeners cat si eventSource.

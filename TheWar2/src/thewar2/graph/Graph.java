@@ -1,4 +1,4 @@
-package graphimmplement.graph;
+package thewar2.graph;
 
 import java.util.LinkedList;
 
