@@ -1,0 +1,32 @@
+Dobre Andrei Ciprian 325CB - Tema 2 Dots total war
+
+Ideea pe care m-am bazat cand am realizat tema a fost urmatoarea: clasa
+Application va fi foarte minimalista si va contine doar apeluri de functii, iar
+partea intensiva va fi realizata de PhysicsEngine.
+
+Descriere generala a claselor importante ce nu apar in javadoc si modificari 
+ale scheletlui
+
+In clasa Application, metoda Simulate realizeaza simularea luptelor dintre
+unitati si coliziunilor.
+
+Structura ierarhica se bazeaza pe un tip de arbore unde exista o singura
+radacina - Application si multe frunze - Unit.
+
+Evenimentele de collision sunt trimise catre rezolvare direct unitatilor imediat
+ele sunt detectate in physicsEngine, iar evenimentele de update sunt
+distribuite de catre dispatcher de fiecare data tuturor listener-ilor. De 
+corectitudinea implementarii evenientelor Pause si Resume nu sunt sigur pentru
+ca am ajuns al concluzia ca este nevoie de lucru cu Thread-uri.
+
+Clasa DrawDebug reprezinta o metoda rudimentara cu care am testat simuarea
+luptelor. Nu am reusit sa testez si miscarea.
+
+In principiu implementarea se bazeaza mai mult pe clasa physicsEngine care
+ar fi suficienta pentru rezolvarea efectiva a task-ului, eliminand complet
+arhitectura event driven.
+
+Nu am reusit sa implementez bonusul obtinut deunitati prin formatiuni conexe.
+Am implementat o strucutra de graf pe care speram sa o folosesc, dar
+complexitatea physicsEngine-ului si timpul m-au facut sa renunt.
+

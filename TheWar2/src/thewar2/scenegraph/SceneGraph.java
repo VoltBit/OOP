@@ -2,6 +2,8 @@ package thewar2.scenegraph;
 
 import java.util.LinkedList;
 import thewar2.Army;
+import thewar2.Unit;
+import thewar2.Vector2d;
 import thewar2.graph.AbstractGraph;
 import thewar2.graph.Vertex;
 
@@ -22,8 +24,21 @@ public class SceneGraph{
         this.SG.addVertex(0, blueArmy);
     }
 
-    public void addUnit(char colour){
-        
+    /**
+     * Adds a unit to the SceneGraph.
+     * @param u : unit object to be inserted in a node.
+     */
+    public void addUnit(Unit u){
+        if(u.getColour() == 'r')
+            this.SG.addVertex(1, u);
+        else
+            this.SG.addVertex(2, u);
+    }
+    public SceneNode getArmyNode(char colour){
+        if(colour == 'r')
+            return (SceneNode)this.SG.nodeList.get(1);
+        else
+            return (SceneNode)this.SG.nodeList.get(2);
     }
     /* graph structure that holds all SceneNodes */
     static class InnerGraph extends AbstractGraph{

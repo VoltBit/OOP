@@ -1,15 +1,27 @@
 package thewar2.scenegraph;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import thewar2.events.Event;
+import thewar2.events.EventHandler;
 import thewar2.events.IEvent;
 import thewar2.graph.Vertex;
 
+/**
+ * 
+ * The array register keeps the type of an event that a listener can
+ * receive.
+ * 
+ */
 public class SceneNode implements ISceneNode,Vertex{
 
-    int label;
+    final int MAX_EVENTS = 9;
+    EventHandler handler = new EventHandler();
+    int label,register[];
     Object content;
     SceneNode parent;
-    LinkedList listeners,events;
+    LinkedList events, listeners;
+    int listenerCounter = 0;
     SceneNode(SceneNode p, Object c, int l){
         this.label = l;
         this.content = c;
@@ -26,8 +38,14 @@ public class SceneNode implements ISceneNode,Vertex{
         this.parent = null;
     }
     @Override
-    public void addListener(ISceneNode n) {
-        this.listeners.add(n);
+    public void addListener(Event ev,ISceneNode n) {
+        if(events.contains(ev)){
+            this.register[listenerCounter++] = ev.type;
+            listeners.add(n);
+        }
+        else{
+            System.err.println("Event will never happen.");
+        }
     }
 
     @Override
@@ -36,13 +54,28 @@ public class SceneNode implements ISceneNode,Vertex{
     }
 
     @Override
-    public void dispacher() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void dispacher(IEvent ev) {
+        int i;
+        for(i = 0 ; i < listeners.size(); i++){
+            if(register[i] == ((Event)ev).type)
+                ((SceneNode)listeners.get(i)).solveElement(ev);
+        }
     }
 
     @Override
+    public void dispacher() {
+        int i,j;
+        for(j = 0 ; j < events.size(); j++){
+            for(i = 0 ; i < listeners.size(); i++){
+                if(register[i] == ((Event)events.get(j)).type)
+                    ((SceneNode)listeners.get(i)).solveElement((IEvent)events.get(j));
+            } 
+        }
+    }
+    
+    @Override
     public void solveElement(IEvent e) {
-        
+        handler.solveEvent((Event)e,this);
     }
 
     @Override
@@ -63,5 +96,10 @@ public class SceneNode implements ISceneNode,Vertex{
     public boolean collisionCheck(){
         
         return false;
+    }
+    @Override
+    public String toString(){
+        if(this.content == null)return "Empty node - root";
+        return this.content.toString();
     }
 }

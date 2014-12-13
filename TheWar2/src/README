@@ -11,4 +11,7 @@ este nevoie, mai precis: atunci cand sterg un nod nu sterg si toate nodurile
 fiu. In aplicatie niciun nod sters nu va avea fii.
 
 Un alt lucru care a facut pentru implementarea dificila este faptul ca nodurile
-din SceneGraph trebuie sa fie atat listeners cat si eventSource.
+din SceneGraph trebuie sa fie atat listeners cat si eventSource. 
+
+In metoda addListener am considerat ca am nevoie si de un argument care sa dea
+evenimentul pe care il asculta listener-ul.

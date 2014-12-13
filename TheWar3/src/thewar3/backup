@@ -1,0 +1,202 @@
+package thewar3;
+
+import java.util.ArrayList;
+import thewar3.graph.Graph;
+
+public class PhysicsEngine {
+    Graph unitGraph;
+    float cellSize;
+    int numCellX,numCellY;
+    ArrayList[][] Grid;
+    ArrayList units;
+    SceneInfo info;
+    public PhysicsEngine(ArrayList u, SceneInfo i){
+        this.units = u;
+        this.info = i;
+        unitGraph = new Graph(this.units.size());
+        this.cellSize = this.info.unitDistance;
+        this.numCellX = (int) (this.info.dreaptaJos.x / this.cellSize);
+        this.numCellY = (int) (this.info.dreaptaJos.y / this.cellSize);
+        this.Grid = new ArrayList[numCellX][numCellY];
+    }
+    
+    public void initUnitGraph(Application app){
+        int i;
+        for(i = 0; i < app.listeners.size(); i++){
+            this.unitGraph.addVertex(0, app.listeners.get(i));          
+        }
+    }
+    
+    public void placeUnits(){
+        int i;
+        for(i = 0; i < this.units.size(); i++){
+            int cellPosX = (int)(((Unit)this.units.get(i)).pos.x / this.cellSize);
+            int cellPosY = (int)(((Unit)this.units.get(i)).pos.y / this.cellSize);
+            if(this.Grid[cellPosY][cellPosX] == null){
+                this.Grid[cellPosY][cellPosX] = new ArrayList();
+            }
+            this.Grid[cellPosY][cellPosX].add(this.units.get(i));
+        }
+    }
+    public float getDistance(Unit a, Unit b){
+        float c1 = Math.abs(a.pos.x - b.pos.x);
+        float c2 = Math.abs(a.pos.y - b.pos.y);
+        return (float)Math.sqrt(c1 * c1 + c2 * c2);
+    }
+    public Vector2d getClosest(Vector2d x){
+        Vector2d v = new Vector2d();
+        
+        return v;
+    }
+    public Vector2d getNextPos(Unit u, float dt){
+        Vector2d aux = new Vector2d();
+        aux.x = dt * u.speed * u.direction.x;
+        aux.y = dt * u.speed * u.direction.y;
+        return aux;
+    }
+
+    /**
+     * Calculates the trajectories of two units and determines
+     * whether or not they will collide in the given amount of time.
+     * @param A the first unit
+     * @param B the second unit
+     * @param dt duration of the movement
+     * @return 
+     */
+    public boolean checkCollision(Unit A, Unit B, float dt){
+        Vector2d nextPosA = getNextPos(A, dt);
+        Vector2d nextPosB = getNextPos(B, dt);
+        /* determine intersection point */
+        float slope1 = (A.pos.y - nextPosA.y) /(A.pos.x - nextPosA.x);
+        float slope2 = (B.pos.y - nextPosB.y) /(B.pos.x - nextPosB.x);
+        if(slope2 == slope1){
+            /* paralel directions */
+            return false;
+        }
+        Vector2d intersection = new Vector2d();
+        intersection.x =
+                (A.pos.y - B.pos.y + slope2 * B.pos.x - slope1 * A.pos.x) / (slope2 - slope1);
+        if(intersection.x < 0)System.err.println("Warning - negative size");
+        intersection.y = slope1 * (intersection.x - A.pos.x) + A.pos.y;
+        if(intersection.y < 0)System.err.println("Warning - negative size");
+        
+        /*
+            calculate if both units will get to the intersection point at the 
+            same moment + 3 milliseconds (very basic way of taking into account
+            unit's diameter)
+        */
+        float time1 = intersection.x / (A.speed * A.direction.x);
+        float time2 = intersection.x / (B.speed * B.direction.x);
+        if(Math.abs(time1 - time2) < 3){
+            return true;
+        }
+        return false;
+    }
+    public void moveUnit(Unit u, float dt){
+        int i, index;
+        index = this.Grid[(int)(u.pos.x / this.cellSize)][(int)(u.pos.y / this.cellSize)].indexOf(u);
+        if(index != -1){
+            this.Grid[(int)(u.pos.x / this.cellSize)][(int)(u.pos.y / this.cellSize)].remove(index);
+        }
+        else{
+            System.err.println("Unit not in cell!");
+        }
+        u.pos = getNextPos(u, dt);
+        this.Grid[(int)(u.pos.x / this.cellSize)][(int)(u.pos.y / this.cellSize)].add(u);
+    }
+    
+    /**
+     * Checks the next three cells to the right and the one beneath for
+     * enemy units within range and sums their offensive force.
+     * It only checks the four neighboring cells to the left so damage is
+     * not dealt multiple times.
+     * @param units
+     * @param u
+     * @param dt
+     */
+    
+    public void simulateCombat(ArrayList units, float dt){
+        int i;
+        for(i = 0 ; i < units.size(); i++){
+            
+            dealDamage((Unit)units.get(i),dt);
+        }
+    }
+    public void solveCell(int i, int j){
+        
+    }
+    public void dealDamage(Unit u,float dt){
+        int j = (int)(u.pos.x / this.cellSize);
+        int i = (int)(u.pos.y / this.cellSize);
+        int k;
+        /* check for damage from tune units within this cell */
+        for(k = 0; k < this.Grid[i][j].size(); k++){
+            if(u.color != ((Unit)this.Grid[i][j].get(k)).color){
+                if(u.defence > 0)
+                    u.defence -= ((Unit)this.Grid[i][j].get(k)).offence * dt / 1000;
+                if(((Unit)this.Grid[i][j].get(k)).defence > 0)
+                    ((Unit)this.Grid[i][j].get(k)).defence -= u.offence * dt / 1000;
+            }
+        }
+        /* check the four cells to the left */
+        if(i > 0 && j > 0 && this.Grid[i-1][j-1] != null){
+            for(k = 0; k < this.Grid[i-1][j-1].size(); k++){
+                if(u.color != ((Unit)this.Grid[i-1][j-1].get(k)).color &&
+                    getDistance((Unit)this.Grid[i-1][j-1].get(k), u) <= cellSize){
+                    if(u.defence > 0)
+                        u.defence -= ((Unit)this.Grid[i-1][j-1].get(k)).offence * dt / 1000;
+                    if(((Unit)this.Grid[i-1][j-1].get(k)).defence > 0)
+                        ((Unit)this.Grid[i-1][j-1].get(k)).defence -= u.offence * dt / 1000;
+                }
+            }
+        }
+        if(i > 0 && this.Grid[i-1][j] != null){
+            for(k = 0; k < this.Grid[i-1][j].size(); k++){
+                if(u.color != ((Unit)this.Grid[i-1][j].get(k)).color &&
+                    getDistance(((Unit)this.Grid[i-1][j].get(k)), u) <= cellSize){
+                    if(u.defence > 0)
+                        u.defence -= ((Unit)this.Grid[i-1][j].get(k)).offence * dt / 1000;
+                    if(((Unit)this.Grid[i-1][j].get(k)).defence > 0)
+                        ((Unit)this.Grid[i-1][j].get(k)).defence -= u.offence * dt / 1000;
+                }
+            }
+        }
+        if(j > 0 && this.Grid[i][j-1] != null){
+            for(k = 0; k < this.Grid[i][j-1].size(); k++){
+                if(u.color != ((Unit)this.Grid[i][j-1].get(k)).color &&
+                    getDistance((Unit)this.Grid[i][j-1].get(k), u) <= cellSize){
+                    if(u.defence > 0)
+                        u.defence -= ((Unit)this.Grid[i][j-1].get(k)).offence * dt / 1000;
+                    if(((Unit)this.Grid[i][j-1].get(k)).defence > 0)
+                        ((Unit)this.Grid[i][j-1].get(k)).defence -= u.offence * dt / 1000;
+                }
+            }
+        }
+        if(i > 0 && j < this.numCellY - 1 && this.Grid[i-1][j+1] != null){
+            for(k = 0; k < this.Grid[i-1][j+1].size(); k++){
+                if(u.color != ((Unit)this.Grid[i-1][j+1].get(k)).color &&
+                    getDistance((Unit)this.Grid[i-1][j+1].get(k), u) <= cellSize){
+                    if(u.defence > 0)
+                        u.defence -= ((Unit)this.Grid[i-1][j+1].get(k)).offence * dt / 1000;
+                    if(((Unit)this.Grid[i-1][j+1].get(k)).defence > 0)
+                        ((Unit)this.Grid[i-1][j+1].get(k)).defence -= u.offence * dt / 1000;                
+                }
+            }
+        }
+    }
+    
+    public void printGrid(){
+        int i,j;
+        System.out.println("Number of x cells: " + this.numCellX);
+        System.out.println("Number of y cells: " + this.numCellY);
+        System.out.println("Number of units: " + this.units.size());
+        for(i = 0 ; i < this.numCellX; i++){
+            for(j = 0; j < this.numCellY; j++){
+                System.out.println("\nCell[" + i + "][" + j + "]: ");
+                if(this.Grid[i][j] != null)
+                    System.out.print(this.Grid[i][j].toString() + " ");
+            }
+            System.out.println("");
+        }
+    }
+}
