@@ -1,0 +1,83 @@
+package agameoflife;
+
+import graphics.GameDrawer;
+import graphics.GraphicSimulation;
+import graphics.MakeGraphics;
+import java.util.Random;
+
+public class LifeSimulation {
+    Board board;
+    int boardSize = 0;
+    public LifeSimulation() {
+        this.board = new Board();
+    }
+    public LifeSimulation(int size){
+        this.board = new Board(size);
+        this.boardSize = size;
+    }
+    public LifeSimulation(Board inputBoard) {
+        this.board = inputBoard;
+        this.boardSize = inputBoard.getSize();
+    }
+    private void initRandomBoard(){ //refactor: use a factory that can read fromfile <<<<<<<<<<<<<<<
+        int defaultSize = 10;
+        if(this.boardSize == 0){
+            this.boardSize = defaultSize;
+            this.board = new Board(this.boardSize);
+        }
+        Random rand = new Random();
+        int i,j;
+        for(i = 0; i < boardSize; i++){
+            for(j = 0; j < boardSize; j++){
+                if(rand.nextBoolean()){
+                    board.setState(i,j,State.Alive);
+                    System.out.print("[ " + i + " " + j + " ]");
+                }
+            }
+        }
+    }
+    public int getNeighbourCount(Cell cell){
+        int counter = 0;
+        //if(cell.getPosition().x)
+        return counter;
+    }
+    public void genNewGeneration(){
+        int i,j;
+        int neighboursCount = 0;
+        State s;
+        for(i = 0; i < this.boardSize; i++){
+            for(j = 0 ; j < this.boardSize; j++){
+                neighboursCount = getNeighbourCount(board.cellTable[i][j]);
+                s = LifeRules.getNextState(board.cellTable[i][j], neighboursCount);
+                board.setState(i,j,s);
+            }
+        }
+    }
+
+    /**
+     * Method that starts the life simulation. 
+     * @param generations - number of generations, if no argument is received
+     * then the number of generations defaults to 10
+     */
+    public void start(int generations){
+        int i;
+        initRandomBoard();
+        GameDrawer drawHandler;
+        drawHandler = MakeGraphics.initialize(board);
+        for(i = 0; i < generations; i++){
+            genNewGeneration();
+        }
+        MakeGraphics.initialize(board);
+    }
+    public void start(){
+        int i; 
+        int generations = 10;
+        initRandomBoard();
+        GameDrawer drawHandler;
+        drawHandler = MakeGraphics.initialize(board);
+        for(i = 0; i < generations; i++){
+            genNewGeneration();
+        }
+        MakeGraphics.initialize(board);
+    }
+}

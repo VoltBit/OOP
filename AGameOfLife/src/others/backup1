@@ -1,0 +1,128 @@
+package agameoflife.tests;
+
+import agameoflife.Cell;
+import agameoflife.LifeRules;
+import agameoflife.State;
+
+/**
+ * Testing class for the four rules of the game of life.
+ */
+public class CheckRules implements Test{
+    boolean pass;
+    public void checkUnderPopulation(){
+        pass = true;
+        Integer neighbourCount = 1;
+        Cell c = MockingFactory.makeMockCell();
+        LifeRules.underPopulationRule(c,neighbourCount);
+        if(c.getState().equals(State.Alive)){
+            pass = false;
+        }
+        
+        neighbourCount = 0;
+        LifeRules.underPopulationRule(c, neighbourCount);
+        if(c.getState().equals(State.Alive)){
+            pass = false;
+        }
+        if(pass)
+            System.out.println("Under-population rule [PASSED]");
+        else
+            System.out.println("Under-population rule [FAILED]");
+    }
+
+    public void checkLiveOn(){
+        pass = true;
+        Integer neighbourCount;
+        Cell c;
+        for(neighbourCount = 2; neighbourCount < 4; neighbourCount++){
+            c = MockingFactory.makeMockCell(1,1,State.Dead);
+            LifeRules.liveOnRule(c,neighbourCount);
+            if(c.getState().equals(State.Alive)){
+                pass = false;
+                break;
+            }
+            c = MockingFactory.makeMockCell(1,1,State.Alive);
+            LifeRules.liveOnRule(c,neighbourCount);
+            if(c.getState().equals(State.Dead)){
+                pass = false;
+                break;
+            }
+        }
+        if(pass)
+            System.out.println("Live on rule [PASSED]");
+        else
+            System.out.println("Live on rule [FAILED]");
+    }
+    
+    public void checkOverPopulation(){
+        pass = true;
+        Integer neighbourCount;
+        Cell c;
+        for(neighbourCount = 4; neighbourCount < 9; neighbourCount++){
+            c = MockingFactory.makeMockCell();
+            LifeRules.liveOnRule(c,neighbourCount);
+            if(c.getState().equals(State.Alive)){
+                pass = false;
+                break;
+            }
+        }
+        if(pass)
+            System.out.println("Over-population rule [PASSED]");
+        else
+            System.out.println("Over-population rule [FAILED]");
+    }
+    
+    public void checkBirthRule(){
+        pass = true;
+        Integer neighbourCount = 3;
+        Cell c = MockingFactory.makeMockCell(); 
+        LifeRules.birthRule(c,neighbourCount);
+        if(c.getState().equals(State.Dead)){
+            pass = false;
+        }
+        if(pass)
+            System.out.println("Birth rule [PASSED]");
+        else
+            System.out.println("Birth rule [FAILED]");
+            
+    }
+    
+    @Override
+    public void run() {
+        this.checkUnderPopulation();
+        this.checkLiveOn();
+        this.checkOverPopulation();
+        this.checkBirthRule();
+    }
+}
+
+_________________________________________________________
+
+package agameoflife;
+
+public class LifeRules {
+    public static void underPopulationRule(Cell c, Integer neighbours){
+        if(neighbours < 2){
+            c.state = State.Dead;
+        }
+    }
+    
+    public static void liveOnRule(Cell c, Integer neighbours){
+        if(c.getState().equals(State.Dead)){
+            return;
+        }
+        if(neighbours == 2 || neighbours == 3){
+            c.state = State.Alive;
+        }
+    }
+    
+    public static void overPopulationRule(Cell c, Integer neighbours){
+        if(neighbours > 3){
+            c.state = State.Dead;
+        }
+    }
+    
+    public static void birthRule(Cell c, Integer neighbours){
+        if(neighbours == 3)
+            c.state = State.Alive;
+    }
+}
